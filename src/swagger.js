@@ -1,5 +1,11 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const routesGlob = path.resolve(__dirname, 'routes', '*.js').replace(/\\/g, '/');
 
 const options = {
   definition: {
@@ -24,13 +30,26 @@ const options = {
       },
     },
   },
-  apis: ['./src/routes/*.js'],
+  apis: [routesGlob],
 };
 
 const specs = swaggerJsdoc(options);
 
 const swaggerSetup = (app) => {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+  app.use('/api-docs', (req, res, next) => {
+    if (req.originalUrl === '/api-docs') {
+      return res.redirect(302, '/api-docs/');
+    }
+
+    return next();
+  });
+
+  app.get('/api-docs.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(specs);
+  });
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 };
 
 export default swaggerSetup;

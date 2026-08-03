@@ -46,6 +46,27 @@ router.get('/:id', obtenerMesa);
  *     tags: [Mesas]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [numero, capacidad]
+ *             properties:
+ *               numero:
+ *                 type: integer
+ *               capacidad:
+ *                 type: integer
+ *               ubicacion:
+ *                 type: string
+ *               disponible:
+ *                 type: boolean
+ *           example:
+ *             numero: 10
+ *             capacidad: 4
+ *             ubicacion: Patio
+ *             disponible: true
  *     responses:
  *       201:
  *         description: Mesa creada
@@ -60,6 +81,31 @@ router.post('/', verifyToken, requireAdmin, crearMesa);
  *     tags: [Mesas]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               numero:
+ *                 type: integer
+ *               capacidad:
+ *                 type: integer
+ *               ubicacion:
+ *                 type: string
+ *               disponible:
+ *                 type: boolean
+ *           example:
+ *             numero: 11
+ *             capacidad: 6
+ *             ubicacion: Patio
+ *             disponible: true
  *     responses:
  *       200:
  *         description: Mesa actualizada
@@ -74,6 +120,11 @@ router.put('/:id', verifyToken, requireAdmin, actualizarMesa);
  *     tags: [Mesas]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
  *     responses:
  *       200:
  *         description: Mesa desactivada

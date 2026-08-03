@@ -13,6 +13,28 @@ const router = Router();
  *     tags: [Reservaciones]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [mesa_id, fecha, hora, comensales]
+ *             properties:
+ *               mesa_id:
+ *                 type: integer
+ *               fecha:
+ *                 type: string
+ *                 format: date
+ *               hora:
+ *                 type: string
+ *               comensales:
+ *                 type: integer
+ *           example:
+ *             mesa_id: 3
+ *             fecha: 2026-08-06
+ *             hora: "21:00"
+ *             comensales: 2
  *     responses:
  *       201:
  *         description: Reservación creada
@@ -55,6 +77,23 @@ router.get('/', verifyToken, requireAdmin, listarReservaciones);
  *     tags: [Reservaciones]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [estado]
+ *             properties:
+ *               estado:
+ *                 type: string
+ *           example:
+ *             estado: confirmada
  *     responses:
  *       200:
  *         description: Estado actualizado
@@ -69,6 +108,11 @@ router.put('/:id/estado', verifyToken, requireAdmin, cambiarEstadoReservacion);
  *     tags: [Reservaciones]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer }
  *     responses:
  *       200:
  *         description: Reservación cancelada

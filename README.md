@@ -79,7 +79,3 @@ La documentación interactiva queda disponible en:
 ```text
 http://localhost:4000/api-docs
 ```
-
-## Notas
-- El archivo del skill se mantiene local y no se sube al repositorio.
-- El proyecto está preparado para seguir agregando más validaciones y una capa de base de datos más completa.
